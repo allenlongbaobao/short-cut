@@ -76,9 +76,10 @@ module.exports = {
         test: /.(scss|css)$/,
 
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          /** 分离 css */
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          // },
           {
             loader: 'css-loader',
 

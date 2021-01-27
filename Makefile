@@ -4,8 +4,11 @@ clean:
 build:
 	make clean && tsc && tsc -m es6 --outDir lib-esm
 
+copy:
+	npx copyfiles -u 1 \"src/**/*.d.ts\" .
+	cp -r ./src/style lib
+	cp -r ./src/style lib-esm
+
 pub:
-	make build
 	npx standard-version
-	yarn copy-dts
 	npm publish --access=public

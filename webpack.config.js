@@ -77,9 +77,9 @@ module.exports = {
 
         use: [
           /** 分离 css */
-          // {
-          //   loader: MiniCssExtractPlugin.loader,
-          // },
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           {
             loader: 'css-loader',
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/allenlongbaobao/short-cut/compare/v1.6.0...v1.6.1) (2021-01-27)
+
+
+### Bug Fixes
+
+* 解决覆盖的问题 ([fb19b56](https://github.com/allenlongbaobao/short-cut/commit/fb19b56eb06815f2ea834323dcb51a7561a0565f))
+
 ## [1.6.0](https://github.com/allenlongbaobao/short-cut/compare/v1.5.1...v1.6.0) (2021-01-27)
 
 

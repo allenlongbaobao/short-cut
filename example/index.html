@@ -16,13 +16,16 @@
       shift: true,
     }, () => {
       console.log('a')
-    })
+    } )
     window.shortCut.on({
       ctrl: true,
       key: 'c',
-      content: '复制'
+      content: '复制',
+      showTip: false,
     }, () => {
       console.log('c')
+    }, () => {
+      console.log('键盘 up')
     })
     window.shortCut.on({
       key: 'x',

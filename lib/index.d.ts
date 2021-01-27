@@ -4,7 +4,8 @@ declare class ShortCut {
     static id: number;
     static instance: ShortCut;
     private render;
-    private kvMap;
+    private kvDownMap;
+    private kvUpMap;
     private keyValueMap;
     private option;
     /**
@@ -21,8 +22,8 @@ declare class ShortCut {
      * @param fn
      * @param preventDefault 是否阻止默认行为，默认不阻止
      */
-    on(keyData: KeyData, fn: () => void, preventDefault?: boolean): void;
-    private handler;
+    on(keyData: KeyData, keyDownFn: () => void, keyUpFn?: () => void): void;
+    private handlerKeyUpOrDown;
     private getContent;
     /**
      * 判断 传入的 keyData 是否已经存在，如果存在，则返回已存在的 keyData

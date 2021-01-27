@@ -1,4 +1,4 @@
-import { IOption, Keyboard, KeyData } from './type';
+import { IOption, Keyboard, KeyData, MapType } from './type';
 import render from './render';
 import './style/index.scss';
 class ShortCut {
@@ -7,7 +7,8 @@ class ShortCut {
 
   private render = render;
 
-  private kvMap: Map<KeyData, () => void> = new Map();
+  private kvDownMap: MapType = new Map();
+  private kvUpMap: MapType = new Map();
   private keyValueMap: { [key: string]: number } = {
     DELETE: 127,
     ENTER: 13,
@@ -39,8 +40,11 @@ class ShortCut {
     }
     
     document.addEventListener('keydown', (event) => {
-      this.handler(event);
+      this.handlerKeyUpOrDown(event, this.kvDownMap);
     });
+    document.addEventListener('keyup', (event) => {
+      this.handlerKeyUpOrDown(event, this.kvUpMap, false)
+    })
     ShortCut.id++;
   }
 
@@ -50,19 +54,21 @@ class ShortCut {
    * @param fn
    * @param preventDefault 是否阻止默认行为，默认不阻止
    */
-  public on(keyData: KeyData, fn: () => void, preventDefault: boolean = this.option.preventDefault) {
+  public on(keyData: KeyData, keyDownFn: () => void, keyUpFn?: () => void) {
     // 做一次键重复性判断
-    this.kvMap.set(this.checkKeyExist(keyData), fn);
-    this.option.preventDefault = preventDefault
+    this.kvDownMap.set(this.checkKeyExist(keyData, this.kvDownMap), keyDownFn);
+    if (keyUpFn) {
+      this.kvUpMap.set(this.checkKeyExist(keyData, this.kvUpMap), keyUpFn)
+    }
   }
 
-  private handler(event: KeyboardEvent) {
-    const keySets = this.kvMap.keys();
+  private handlerKeyUpOrDown(event: KeyboardEvent, map: MapType, showContent: boolean = true): void {
+    const keySets = map.keys();
     const { metaKey, ctrlKey, shiftKey } = event;
     const { preventDefault } = this.option
 
     for (let keySet of keySets) {
-      const { ctrl, meta, shift } = keySet;
+      const { ctrl, meta, shift, showTip = true } = keySet;
       
       if (this.checkKeyMatch(event.keyCode, keySet)) {
         // 辅助键严格相等
@@ -79,14 +85,16 @@ class ShortCut {
         if (preventDefault) {
           event.preventDefault();
         }
-        const fn = this.kvMap.get(keySet);
-        this.render.show(this.getContent(keySet));
+        const fn = map.get(keySet);
+        if (showContent && showTip) {
+          this.render.show(this.getContent(keySet));
+        }
         fn();
       }
     }
   }
   private getContent(keyData: KeyData): string {
-    const { key, meta, ctrl, shift, content } = keyData;
+    const { meta, ctrl, shift, content } = keyData;
     return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''} ${this.getKeyLetter(keyData)} ${content}`;
   }
 
@@ -95,9 +103,9 @@ class ShortCut {
    * 不存在, 则返回传入的 keyData
    * @param keyData
    */
-  private checkKeyExist(keyData: KeyData): KeyData {
+  private checkKeyExist(keyData: KeyData, map: MapType): KeyData {
     // 每个属性对比是否一致
-    for (let keySet of this.kvMap.keys()) {
+    for (let keySet of map.keys()) {
       const { key, alt, ctrl, shift } = keySet;
       if (
         key !== keyData.key ||

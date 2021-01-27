@@ -19,6 +19,10 @@ export interface KeyData {
    * 事件名称
    */
   content: string;
+  /**
+   * 是否展示按键提醒，默认展示，如需关闭，请手动传入 false
+   */
+  showTip?: boolean;
 }
 
 export const enum Keyboard {
@@ -42,3 +46,5 @@ export interface IOption {
    */
   preventDefault: boolean
 }
+
+export type MapType = Map<KeyData, () => void>

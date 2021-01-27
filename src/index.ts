@@ -1,4 +1,4 @@
-import { Keyboard, KeyData } from './type';
+import { IOption, Keyboard, KeyData } from './type';
 import render from './render';
 import './style/index.scss';
 class ShortCut {
@@ -15,13 +15,10 @@ class ShortCut {
     CTRL: 17,
     ALT: 18,
     SPACE: 32,
-    a: 65,
-    c: 67,
-    s: 83,
-    v: 86,
-    y: 89,
-    z: 90,
   };
+  private option: IOption = {
+    preventDefault: true
+  }
 
   /**
    * 构造器传入参数
@@ -30,11 +27,17 @@ class ShortCut {
    *
    * @param param0
    */
-  constructor({} = {}) {
+  constructor(o?: IOption) {
+    // 设置会覆盖
+    if (o) {
+      this.option = o
+    }
+
     // 确保全局唯一
     if (ShortCut.instance) {
       return ShortCut.instance;
     }
+    
     document.addEventListener('keydown', (event) => {
       this.handler(event);
     });
@@ -45,20 +48,22 @@ class ShortCut {
    * 增加了监听事件
    * @param keyData
    * @param fn
+   * @param preventDefault 是否阻止默认行为，默认不阻止
    */
-  public on(keyData: KeyData, fn: () => void) {
+  public on(keyData: KeyData, fn: () => void, preventDefault: boolean = this.option.preventDefault) {
     // 做一次键重复性判断
     this.kvMap.set(this.checkKeyExist(keyData), fn);
-    console.log('kvMap', this.kvMap);
+    this.option.preventDefault = preventDefault
   }
 
   private handler(event: KeyboardEvent) {
     const keySets = this.kvMap.keys();
     const { metaKey, ctrlKey, shiftKey } = event;
+    const { preventDefault } = this.option
 
     for (let keySet of keySets) {
       const { key, ctrl, meta, shift } = keySet;
-      if (event.keyCode === this.keyValueMap[key]) {
+      if (event.keyCode === (key).toUpperCase().charCodeAt(0)) {
         // 辅助键严格相等
         if (!!ctrl !== ctrlKey) {
           return;
@@ -70,7 +75,9 @@ class ShortCut {
           return;
         }
 
-        event.preventDefault();
+        if (preventDefault) {
+          event.preventDefault();
+        }
         const fn = this.kvMap.get(keySet);
         this.render.show(this.getContent(keySet));
         fn();
@@ -79,8 +86,8 @@ class ShortCut {
   }
   private getContent(keyData: KeyData): string {
     // TODO:
-    const { key, meta, ctrl, shift } = keyData;
-    return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''}${key}`;
+    const { key, meta, ctrl, shift, content } = keyData;
+    return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''}${key} ${content || ''}`;
   }
 
   /**

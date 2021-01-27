@@ -39,9 +39,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: './src/index.ts',
-  watch: true, // 监听代码更新
+  watch: false, // 监听代码更新
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, '_bundles'),
@@ -58,7 +58,7 @@ module.exports = {
   },
 
   plugins: [
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
     new WebpackManifestPlugin(),
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin({ filename: 'index.css' }),
@@ -104,8 +104,7 @@ module.exports = {
   },
 
   optimization: {
-    // minimizer: [new TerserPlugin()],
-
+    minimizer: [new TerserPlugin()],
     splitChunks: {
       cacheGroups: {
         vendors: {

@@ -19,9 +19,8 @@ var ShortCut = /** @class */ (function () {
      *
      * @param param0
      */
-    function ShortCut(_a) {
+    function ShortCut(o) {
         var _this = this;
-        _a = {};
         this.render = render;
         this.kvMap = new Map();
         this.keyValueMap = {
@@ -31,13 +30,14 @@ var ShortCut = /** @class */ (function () {
             CTRL: 17,
             ALT: 18,
             SPACE: 32,
-            a: 65,
-            c: 67,
-            s: 83,
-            v: 86,
-            y: 89,
-            z: 90,
         };
+        this.option = {
+            preventDefault: true
+        };
+        // 设置会覆盖
+        if (o) {
+            this.option = o;
+        }
         // 确保全局唯一
         if (ShortCut.instance) {
             return ShortCut.instance;
@@ -51,21 +51,24 @@ var ShortCut = /** @class */ (function () {
      * 增加了监听事件
      * @param keyData
      * @param fn
+     * @param preventDefault 是否阻止默认行为，默认不阻止
      */
-    ShortCut.prototype.on = function (keyData, fn) {
+    ShortCut.prototype.on = function (keyData, fn, preventDefault) {
+        if (preventDefault === void 0) { preventDefault = this.option.preventDefault; }
         // 做一次键重复性判断
         this.kvMap.set(this.checkKeyExist(keyData), fn);
-        console.log('kvMap', this.kvMap);
+        this.option.preventDefault = preventDefault;
     };
     ShortCut.prototype.handler = function (event) {
         var e_1, _a;
         var keySets = this.kvMap.keys();
         var metaKey = event.metaKey, ctrlKey = event.ctrlKey, shiftKey = event.shiftKey;
+        var preventDefault = this.option.preventDefault;
         try {
             for (var keySets_1 = __values(keySets), keySets_1_1 = keySets_1.next(); !keySets_1_1.done; keySets_1_1 = keySets_1.next()) {
                 var keySet = keySets_1_1.value;
                 var key = keySet.key, ctrl = keySet.ctrl, meta = keySet.meta, shift = keySet.shift;
-                if (event.keyCode === this.keyValueMap[key]) {
+                if (event.keyCode === (key).toUpperCase().charCodeAt(0)) {
                     // 辅助键严格相等
                     if (!!ctrl !== ctrlKey) {
                         return;
@@ -76,7 +79,9 @@ var ShortCut = /** @class */ (function () {
                     if (!!shift !== shiftKey) {
                         return;
                     }
-                    event.preventDefault();
+                    if (preventDefault) {
+                        event.preventDefault();
+                    }
                     var fn = this.kvMap.get(keySet);
                     this.render.show(this.getContent(keySet));
                     fn();
@@ -93,8 +98,8 @@ var ShortCut = /** @class */ (function () {
     };
     ShortCut.prototype.getContent = function (keyData) {
         // TODO:
-        var key = keyData.key, meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift;
-        return "" + (ctrl ? 'Ctrl + ' : '') + (meta ? 'command + ' : '') + (shift ? 'Shift + ' : '') + key;
+        var key = keyData.key, meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift, content = keyData.content;
+        return "" + (ctrl ? 'Ctrl + ' : '') + (meta ? 'command + ' : '') + (shift ? 'Shift + ' : '') + key + " " + (content || '');
     };
     /**
      * 判断 传入的 keyData 是否已经存在，如果存在，则返回已存在的 keyData

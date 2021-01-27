@@ -1,8 +1,12 @@
 clean:
 	rm -rf _bundles lib lib-esm
 
+# 依次执行一下命令
 build:
-	make clean && tsc && tsc -m es6 --outDir lib-esm
+	make clean && tsc && tsc -m es6 --outDir lib-esm --noEmit
+
+webpack:
+	yarn webpack
 
 copy:
 	cp src/type.d.ts lib

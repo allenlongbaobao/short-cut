@@ -25,3 +25,10 @@ export const enum Keyboard {
   Z = 90,
   Y = 89,
 }
+
+export interface IOption {
+  /**
+   * 默认为 true
+   */
+  preventDefault: boolean
+}

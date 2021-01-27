@@ -1,7 +1,7 @@
 var Render = /** @class */ (function () {
     function Render() {
         this.dom = window.document.createElement('div');
-        this.dom.innerHTML = 'xxx';
+        this.dom.innerHTML = '';
         window.document.body.appendChild(this.dom);
         this.init();
     }

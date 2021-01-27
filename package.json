@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack",
+    "test-example": "webpack",
+    "webpack": "webpack --config webpack.prod.js",
     "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" ."
   },
   "repository": {

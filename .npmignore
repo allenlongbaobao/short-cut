@@ -1,0 +1,9 @@
+.*
+**/tsconfig.json
+**/webpack.config.js
+**/webpack.prod.js
+src
+test
+example
+dist
+yarn.lock

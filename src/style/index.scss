@@ -1,0 +1,34 @@
+
+.short-cut {
+  min-width: 100px;
+  height: 50px;
+  background-color:rgba(128,128,128, .8);
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color:honeydew;
+  font-weight: 500;
+  font-size: 18px; 
+  transition: opacity, 1.8s, ease, 0.5s;
+  padding: 0 10px;
+
+  &.show {
+    opacity: 1;
+    transition: opacity, 1.8s, ease, .5s;
+  }
+}
+
+@keyframes opa {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

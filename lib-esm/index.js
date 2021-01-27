@@ -92,7 +92,9 @@ var ShortCut = /** @class */ (function () {
                     if (showContent && showTip) {
                         this.render.show(this.getContent(keySet));
                     }
-                    fn();
+                    if (fn) {
+                        fn();
+                    }
                 }
             }
         }
@@ -119,11 +121,13 @@ var ShortCut = /** @class */ (function () {
             // 每个属性对比是否一致
             for (var _b = __values(map.keys()), _c = _b.next(); !_c.done; _c = _b.next()) {
                 var keySet = _c.value;
-                var key = keySet.key, alt = keySet.alt, ctrl = keySet.ctrl, shift = keySet.shift;
-                if (key !== keyData.key ||
+                var key = keySet.key, alt = keySet.alt, ctrl = keySet.ctrl, shift = keySet.shift, code = keySet.code, content = keySet.content;
+                if (code !== keyData.code ||
+                    key !== keyData.key ||
                     alt !== keyData.alt ||
                     ctrl !== keyData.ctrl ||
-                    shift !== keyData.shift) {
+                    shift !== keyData.shift ||
+                    content !== keyData.content) {
                     continue;
                 }
                 return keySet;

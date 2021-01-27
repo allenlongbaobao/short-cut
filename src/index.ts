@@ -89,7 +89,9 @@ class ShortCut {
         if (showContent && showTip) {
           this.render.show(this.getContent(keySet));
         }
-        fn();
+        if (fn) {
+          fn();
+        }
       }
     }
   }
@@ -106,12 +108,14 @@ class ShortCut {
   private checkKeyExist(keyData: KeyData, map: MapType): KeyData {
     // 每个属性对比是否一致
     for (let keySet of map.keys()) {
-      const { key, alt, ctrl, shift } = keySet;
+      const { key, alt, ctrl, shift, code, content } = keySet;
       if (
+        code !== keyData.code || 
         key !== keyData.key ||
         alt !== keyData.alt ||
         ctrl !== keyData.ctrl ||
-        shift !== keyData.shift
+        shift !== keyData.shift ||
+        content !== keyData.content
       ) {
         continue;
       }

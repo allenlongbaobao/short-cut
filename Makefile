@@ -5,7 +5,8 @@ build:
 	make clean && tsc && tsc -m es6 --outDir lib-esm
 
 copy:
-	npx copyfiles -u 1 \"src/**/*.d.ts\" .
+	cp src/type.d.ts lib
+	cp src/type.d.ts lib-esm
 	cp -r ./src/style lib
 	cp -r ./src/style lib-esm
 	cp _bundles/index.css lib

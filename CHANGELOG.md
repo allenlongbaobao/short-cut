@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/allenlongbaobao/short-cut/compare/v1.3.1...v1.4.0) (2021-01-27)
+
+
+### Features
+
+* 移动 type.d.ts 位置 ([ea196ca](https://github.com/allenlongbaobao/short-cut/commit/ea196caf5a9abb729c896b5ba480f5ba3ece67b2))
+
 ### [1.3.1](https://github.com/allenlongbaobao/short-cut/compare/v1.3.0...v1.3.1) (2021-01-27)
 
 ## 1.3.0 (2021-01-27)

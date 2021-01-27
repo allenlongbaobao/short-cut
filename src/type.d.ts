@@ -7,7 +7,17 @@ export interface KeyData {
   caps?: boolean;
   tab?: boolean;
   space?: boolean;
-  key: string;
+  /**
+   * 键盘按键对应的 ASCII 码
+   */
+  code?: Keyboard;
+  /**
+   * 键盘按键名称
+   */
+  key?: string;
+  /**
+   * 事件名称
+   */
   content: string;
 }
 

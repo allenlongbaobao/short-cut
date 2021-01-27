@@ -3,7 +3,7 @@ clean:
 
 # 依次执行一下命令
 build:
-	make clean && tsc && tsc -m es6 --outDir lib-esm --noEmit
+	make clean && tsc && tsc -m es6 --outDir lib-esm
 
 webpack:
 	yarn webpack

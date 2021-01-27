@@ -30,6 +30,14 @@ declare class ShortCut {
      * @param keyData
      */
     private checkKeyExist;
+    /**
+     * 判断按键 和 约束的条件是否匹配，不包括辅助功能键, 支持 键盘字母和 code 两个约束
+     */
+    private checkKeyMatch;
+    /**
+     * 获取按键字母（声明时有可能传 code）
+     */
+    private getKeyLetter;
 }
 export default ShortCut;
 //# sourceMappingURL=index.d.ts.map

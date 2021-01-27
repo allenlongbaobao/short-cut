@@ -62,8 +62,9 @@ class ShortCut {
     const { preventDefault } = this.option
 
     for (let keySet of keySets) {
-      const { key, ctrl, meta, shift } = keySet;
-      if (event.keyCode === (key).toUpperCase().charCodeAt(0)) {
+      const { ctrl, meta, shift } = keySet;
+      
+      if (this.checkKeyMatch(event.keyCode, keySet)) {
         // 辅助键严格相等
         if (!!ctrl !== ctrlKey) {
           return;
@@ -85,9 +86,8 @@ class ShortCut {
     }
   }
   private getContent(keyData: KeyData): string {
-    // TODO:
     const { key, meta, ctrl, shift, content } = keyData;
-    return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''}${key} ${content || ''}`;
+    return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''} ${this.getKeyLetter(keyData)} ${content}`;
   }
 
   /**
@@ -110,6 +110,31 @@ class ShortCut {
       return keySet;
     }
     return keyData;
+  }
+  /**
+   * 判断按键 和 约束的条件是否匹配，不包括辅助功能键, 支持 键盘字母和 code 两个约束
+   */
+  private checkKeyMatch(keyCode: number, keySet: KeyData): boolean {
+    const { key, code } = keySet;
+    if (key) {
+      return keyCode === (key).toUpperCase().charCodeAt(0)
+    }
+    return keyCode === code
+  }
+  /**
+   * 获取按键字母（声明时有可能传 code）
+   */
+  private getKeyLetter(keySet: KeyData): string {
+    const { key, code } = keySet
+    if (key) {
+      return key
+    }
+    if (code) {
+      return String.fromCharCode(code)
+    }
+
+    return ''
+
   }
 }
 (window as any).shortCut = new ShortCut();

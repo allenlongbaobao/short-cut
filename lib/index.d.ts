@@ -1,5 +1,5 @@
-import { IOption, KeyData } from './type';
-import './style/index.scss';
+import { IOption, KeyData } from "./type";
+import "./style/index.scss";
 declare class ShortCut {
     static id: number;
     static instance: ShortCut;
@@ -35,6 +35,11 @@ declare class ShortCut {
      * 判断按键 和 约束的条件是否匹配，不包括辅助功能键, 支持 键盘字母和 code 两个约束
      */
     private checkKeyMatch;
+    /**
+     * 判断辅助键是否匹配
+     * @param keySet
+     */
+    private checkAssistKeyMatch;
     /**
      * 获取按键字母（声明时有可能传 code）
      */

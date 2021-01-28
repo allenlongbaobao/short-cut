@@ -23,6 +23,11 @@ export interface KeyData {
    * 是否展示按键提醒，默认展示，如需关闭，请手动传入 false
    */
   showTip?: boolean;
+  /**
+   * 辅助键数组，当需要多个辅助键时推荐使用，比如 复制，需要支持 ctrl + c 或者 command + c
+   * 需要注意的是，assistArray 的优先级最高，会覆盖其他的辅助键设置
+   */
+  assistArray?: [];
 }
 
 export const enum Keyboard {
@@ -44,7 +49,7 @@ export interface IOption {
   /**
    * 默认为 true
    */
-  preventDefault: boolean
+  preventDefault: boolean;
 }
 
-export type MapType = Map<KeyData, () => void>
+export type MapType = Map<KeyData, () => void>;

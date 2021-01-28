@@ -1,6 +1,6 @@
-import { IOption, Keyboard, KeyData, MapType } from './type';
-import render from './render';
-import './style/index.scss';
+import { IOption, KeyData, MapType } from "./type";
+import render from "./render";
+import "./style/index.scss";
 class ShortCut {
   public static id = 0;
   public static instance: ShortCut = new ShortCut();
@@ -18,8 +18,8 @@ class ShortCut {
     SPACE: 32,
   };
   private option: IOption = {
-    preventDefault: true
-  }
+    preventDefault: true,
+  };
 
   /**
    * 构造器传入参数
@@ -31,20 +31,20 @@ class ShortCut {
   constructor(o?: IOption) {
     // 设置会覆盖
     if (o) {
-      this.option = o
+      this.option = o;
     }
 
     // 确保全局唯一
     if (ShortCut.instance) {
       return ShortCut.instance;
     }
-    
-    document.addEventListener('keydown', (event) => {
+
+    document.addEventListener("keydown", (event) => {
       this.handlerKeyUpOrDown(event, this.kvDownMap);
     });
-    document.addEventListener('keyup', (event) => {
-      this.handlerKeyUpOrDown(event, this.kvUpMap, false)
-    })
+    document.addEventListener("keyup", (event) => {
+      this.handlerKeyUpOrDown(event, this.kvUpMap, false);
+    });
     ShortCut.id++;
   }
 
@@ -58,27 +58,23 @@ class ShortCut {
     // 做一次键重复性判断
     this.kvDownMap.set(this.checkKeyExist(keyData, this.kvDownMap), keyDownFn);
     if (keyUpFn) {
-      this.kvUpMap.set(this.checkKeyExist(keyData, this.kvUpMap), keyUpFn)
+      this.kvUpMap.set(this.checkKeyExist(keyData, this.kvUpMap), keyUpFn);
     }
   }
 
-  private handlerKeyUpOrDown(event: KeyboardEvent, map: MapType, showContent: boolean = true): void {
+  private handlerKeyUpOrDown(
+    event: KeyboardEvent,
+    map: MapType,
+    showContent: boolean = true
+  ): void {
     const keySets = map.keys();
-    const { metaKey, ctrlKey, shiftKey } = event;
-    const { preventDefault } = this.option
+    const { preventDefault } = this.option;
 
     for (let keySet of keySets) {
-      const { ctrl, meta, shift, showTip = true } = keySet;
-      
+      const { showTip = true } = keySet;
+
       if (this.checkKeyMatch(event.keyCode, keySet)) {
-        // 辅助键严格相等
-        if (!!ctrl !== ctrlKey) {
-          return;
-        }
-        if (!!meta !== metaKey) {
-          return;
-        }
-        if (!!shift !== shiftKey) {
+        if (!this.checkAssistKeyMatch(keySet, event)) {
           return;
         }
 
@@ -96,8 +92,10 @@ class ShortCut {
     }
   }
   private getContent(keyData: KeyData): string {
-    const { meta, ctrl, shift, content } = keyData;
-    return `${ctrl ? 'Ctrl + ' : ''}${meta ? 'command + ' : ''}${shift ? 'Shift + ' : ''} ${this.getKeyLetter(keyData)} ${content}`;
+    const { meta, ctrl, shift, content = "" } = keyData;
+    return `${ctrl ? "Ctrl + " : ""}${meta ? "command + " : ""}${
+      shift ? "Shift + " : ""
+    } ${this.getKeyLetter(keyData)} ${content}`;
   }
 
   /**
@@ -110,7 +108,7 @@ class ShortCut {
     for (let keySet of map.keys()) {
       const { key, alt, ctrl, shift, code, content } = keySet;
       if (
-        code !== keyData.code || 
+        code !== keyData.code ||
         key !== keyData.key ||
         alt !== keyData.alt ||
         ctrl !== keyData.ctrl ||
@@ -129,24 +127,55 @@ class ShortCut {
   private checkKeyMatch(keyCode: number, keySet: KeyData): boolean {
     const { key, code } = keySet;
     if (key) {
-      return keyCode === (key).toUpperCase().charCodeAt(0)
+      return keyCode === key.toUpperCase().charCodeAt(0);
     }
-    return keyCode === code
+    return keyCode === code;
+  }
+  /**
+   * 判断辅助键是否匹配
+   * @param keySet
+   */
+  private checkAssistKeyMatch(keySet: KeyData, event: KeyboardEvent): boolean {
+    const { metaKey, ctrlKey, shiftKey } = event;
+    const { assistArray } = keySet;
+    // 有辅助键的情况，会忽略其他的键的支持
+    if (assistArray && assistArray.length) {
+      // 数值中配置了多个方案，只要有一个方案匹配上就可以返回 true
+      for (let optKeys of assistArray) {
+        const { ctrl, meta, shift } = optKeys;
+        if (!!ctrl === ctrlKey && !!meta === metaKey && !!shift === shiftKey) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      const { ctrl, meta, shift } = keySet;
+      // 辅助键严格相等
+      if (!!ctrl !== ctrlKey) {
+        return false;
+      }
+      if (!!meta !== metaKey) {
+        return false;
+      }
+      if (!!shift !== shiftKey) {
+        return false;
+      }
+      return true;
+    }
   }
   /**
    * 获取按键字母（声明时有可能传 code）
    */
   private getKeyLetter(keySet: KeyData): string {
-    const { key, code } = keySet
+    const { key, code } = keySet;
     if (key) {
-      return key
+      return key;
     }
     if (code) {
-      return String.fromCharCode(code)
+      return String.fromCharCode(code);
     }
 
-    return ''
-
+    return "";
   }
 }
 (window as any).shortCut = new ShortCut();

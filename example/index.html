@@ -21,7 +21,8 @@
       ctrl: true,
       key: 'c',
       content: '复制',
-      showTip: false,
+      assistArray: [{ctrl: true}, { meta: true}],
+      showTip: true,
     }, () => {
       console.log('c')
     }, () => {
@@ -31,6 +32,6 @@
       key: 'x',
     }, () => {
       console.log('c')
-    }, true)
+    })
   </script>
 </html>

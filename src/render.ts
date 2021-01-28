@@ -2,8 +2,8 @@ class Render {
   private dom: HTMLDivElement;
   private timeout: any;
   constructor() {
-    this.dom = window.document.createElement('div');
-    this.dom.innerHTML = '';
+    this.dom = window.document.createElement("div");
+    this.dom.innerHTML = "";
     window.document.body.appendChild(this.dom);
     this.init();
   }
@@ -12,20 +12,20 @@ class Render {
   public show(contents: string) {
     // 立即清除定时器，并将状态重置为 hide
     this.timeout && clearTimeout(this.timeout);
-    this.dom.classList.remove('show');
+    this.dom.classList.remove("show");
 
     setTimeout(() => {
       this.dom.innerHTML = contents;
-      this.dom.classList.add('show');
+      this.dom.classList.add("show");
     }, 100);
 
     this.timeout = setTimeout(() => {
-      this.dom.classList.remove('show');
+      this.dom.classList.remove("show");
     }, 2000);
   }
 
   private init() {
-    this.dom.classList.add('short-cut');
+    this.dom.classList.add("short-cut");
   }
 }
 

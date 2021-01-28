@@ -9,8 +9,8 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-import render from './render';
-import './style/index.scss';
+import render from "./render";
+import "./style/index.scss";
 var ShortCut = /** @class */ (function () {
     /**
      * 构造器传入参数
@@ -33,7 +33,7 @@ var ShortCut = /** @class */ (function () {
             SPACE: 32,
         };
         this.option = {
-            preventDefault: true
+            preventDefault: true,
         };
         // 设置会覆盖
         if (o) {
@@ -43,10 +43,10 @@ var ShortCut = /** @class */ (function () {
         if (ShortCut.instance) {
             return ShortCut.instance;
         }
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener("keydown", function (event) {
             _this.handlerKeyUpOrDown(event, _this.kvDownMap);
         });
-        document.addEventListener('keyup', function (event) {
+        document.addEventListener("keyup", function (event) {
             _this.handlerKeyUpOrDown(event, _this.kvUpMap, false);
         });
         ShortCut.id++;
@@ -68,21 +68,13 @@ var ShortCut = /** @class */ (function () {
         var e_1, _a;
         if (showContent === void 0) { showContent = true; }
         var keySets = map.keys();
-        var metaKey = event.metaKey, ctrlKey = event.ctrlKey, shiftKey = event.shiftKey;
         var preventDefault = this.option.preventDefault;
         try {
             for (var keySets_1 = __values(keySets), keySets_1_1 = keySets_1.next(); !keySets_1_1.done; keySets_1_1 = keySets_1.next()) {
                 var keySet = keySets_1_1.value;
-                var ctrl = keySet.ctrl, meta = keySet.meta, shift = keySet.shift, _b = keySet.showTip, showTip = _b === void 0 ? true : _b;
+                var _b = keySet.showTip, showTip = _b === void 0 ? true : _b;
                 if (this.checkKeyMatch(event.keyCode, keySet)) {
-                    // 辅助键严格相等
-                    if (!!ctrl !== ctrlKey) {
-                        return;
-                    }
-                    if (!!meta !== metaKey) {
-                        return;
-                    }
-                    if (!!shift !== shiftKey) {
+                    if (!this.checkAssistKeyMatch(keySet, event)) {
                         return;
                     }
                     if (preventDefault) {
@@ -107,8 +99,8 @@ var ShortCut = /** @class */ (function () {
         }
     };
     ShortCut.prototype.getContent = function (keyData) {
-        var meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift, content = keyData.content;
-        return "" + (ctrl ? 'Ctrl + ' : '') + (meta ? 'command + ' : '') + (shift ? 'Shift + ' : '') + " " + this.getKeyLetter(keyData) + " " + content;
+        var meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift, _a = keyData.content, content = _a === void 0 ? "" : _a;
+        return "" + (ctrl ? "Ctrl + " : "") + (meta ? "command + " : "") + (shift ? "Shift + " : "") + " " + this.getKeyLetter(keyData) + " " + content;
     };
     /**
      * 判断 传入的 keyData 是否已经存在，如果存在，则返回已存在的 keyData
@@ -148,9 +140,53 @@ var ShortCut = /** @class */ (function () {
     ShortCut.prototype.checkKeyMatch = function (keyCode, keySet) {
         var key = keySet.key, code = keySet.code;
         if (key) {
-            return keyCode === (key).toUpperCase().charCodeAt(0);
+            return keyCode === key.toUpperCase().charCodeAt(0);
         }
         return keyCode === code;
+    };
+    /**
+     * 判断辅助键是否匹配
+     * @param keySet
+     */
+    ShortCut.prototype.checkAssistKeyMatch = function (keySet, event) {
+        var e_3, _a;
+        var metaKey = event.metaKey, ctrlKey = event.ctrlKey, shiftKey = event.shiftKey;
+        var assistArray = keySet.assistArray;
+        // 有辅助键的情况，会忽略其他的键的支持
+        if (assistArray && assistArray.length) {
+            try {
+                // 数值中配置了多个方案，只要有一个方案匹配上就可以返回 true
+                for (var assistArray_1 = __values(assistArray), assistArray_1_1 = assistArray_1.next(); !assistArray_1_1.done; assistArray_1_1 = assistArray_1.next()) {
+                    var optKeys = assistArray_1_1.value;
+                    var ctrl = optKeys.ctrl, meta = optKeys.meta, shift = optKeys.shift;
+                    if (!!ctrl === ctrlKey && !!meta === metaKey && !!shift === shiftKey) {
+                        return true;
+                    }
+                }
+            }
+            catch (e_3_1) { e_3 = { error: e_3_1 }; }
+            finally {
+                try {
+                    if (assistArray_1_1 && !assistArray_1_1.done && (_a = assistArray_1.return)) _a.call(assistArray_1);
+                }
+                finally { if (e_3) throw e_3.error; }
+            }
+            return false;
+        }
+        else {
+            var ctrl = keySet.ctrl, meta = keySet.meta, shift = keySet.shift;
+            // 辅助键严格相等
+            if (!!ctrl !== ctrlKey) {
+                return false;
+            }
+            if (!!meta !== metaKey) {
+                return false;
+            }
+            if (!!shift !== shiftKey) {
+                return false;
+            }
+            return true;
+        }
     };
     /**
      * 获取按键字母（声明时有可能传 code）
@@ -163,7 +199,7 @@ var ShortCut = /** @class */ (function () {
         if (code) {
             return String.fromCharCode(code);
         }
-        return '';
+        return "";
     };
     ShortCut.id = 0;
     ShortCut.instance = new ShortCut();

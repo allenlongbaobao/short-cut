@@ -1,7 +1,7 @@
 var Render = /** @class */ (function () {
     function Render() {
-        this.dom = window.document.createElement('div');
-        this.dom.innerHTML = '';
+        this.dom = window.document.createElement("div");
+        this.dom.innerHTML = "";
         window.document.body.appendChild(this.dom);
         this.init();
     }
@@ -10,17 +10,17 @@ var Render = /** @class */ (function () {
         var _this = this;
         // 立即清除定时器，并将状态重置为 hide
         this.timeout && clearTimeout(this.timeout);
-        this.dom.classList.remove('show');
+        this.dom.classList.remove("show");
         setTimeout(function () {
             _this.dom.innerHTML = contents;
-            _this.dom.classList.add('show');
+            _this.dom.classList.add("show");
         }, 100);
         this.timeout = setTimeout(function () {
-            _this.dom.classList.remove('show');
+            _this.dom.classList.remove("show");
         }, 2000);
     };
     Render.prototype.init = function () {
-        this.dom.classList.add('short-cut');
+        this.dom.classList.add("short-cut");
     };
     return Render;
 }());

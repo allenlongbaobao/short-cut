@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/allenlongbaobao/short-cut/compare/v1.6.1...v1.7.0) (2021-01-28)
+
+
+### Features
+
+* 增加规范；支持多个可选键 ([8562fae](https://github.com/allenlongbaobao/short-cut/commit/8562fae603b75d5961e88d9ca16d17b7284633d7))
+
 ### [1.6.1](https://github.com/allenlongbaobao/short-cut/compare/v1.6.0...v1.6.1) (2021-01-27)
 
 

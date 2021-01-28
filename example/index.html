@@ -5,6 +5,7 @@
   </head>
   <body>
     Short Cut Example@
+    <button id="key-btn">快捷键</button>
   </body>
 
   <script src="../_bundles/index.js"></script>
@@ -32,6 +33,11 @@
       key: 'x',
     }, () => {
       console.log('c')
+    })
+    const btn = document.getElementById('key-btn')
+    btn.addEventListener('click', () => {
+      console.log('x')
+      shortCut.showInstruction()
     })
   </script>
 </html>

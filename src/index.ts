@@ -1,4 +1,5 @@
 import { IOption, KeyData, MapType } from "./type";
+import { getKeyLetter } from "./utils";
 import render from "./render";
 import "./style/index.scss";
 class ShortCut {
@@ -39,6 +40,13 @@ class ShortCut {
       return ShortCut.instance;
     }
 
+    // 离开页面提示
+    window.onbeforeunload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+
+      event.returnValue = "";
+    };
+
     document.addEventListener("keydown", (event) => {
       this.handlerKeyUpOrDown(event, this.kvDownMap);
     });
@@ -60,6 +68,13 @@ class ShortCut {
     if (keyUpFn) {
       this.kvUpMap.set(this.checkKeyExist(keyData, this.kvUpMap), keyUpFn);
     }
+  }
+
+  /**
+   * 展示快捷键说明
+   */
+  public showInstruction() {
+    this.render.showIns(this.kvDownMap);
   }
 
   private handlerKeyUpOrDown(
@@ -95,7 +110,7 @@ class ShortCut {
     const { meta, ctrl, shift, content = "" } = keyData;
     return `${ctrl ? "Ctrl + " : ""}${meta ? "command + " : ""}${
       shift ? "Shift + " : ""
-    } ${this.getKeyLetter(keyData)} ${content}`;
+    } ${getKeyLetter(keyData)} ${content}`;
   }
 
   /**
@@ -162,20 +177,6 @@ class ShortCut {
       }
       return true;
     }
-  }
-  /**
-   * 获取按键字母（声明时有可能传 code）
-   */
-  private getKeyLetter(keySet: KeyData): string {
-    const { key, code } = keySet;
-    if (key) {
-      return key;
-    }
-    if (code) {
-      return String.fromCharCode(code);
-    }
-
-    return "";
   }
 }
 (window as any).shortCut = new ShortCut();

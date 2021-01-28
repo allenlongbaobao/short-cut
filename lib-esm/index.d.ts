@@ -23,6 +23,10 @@ declare class ShortCut {
      * @param preventDefault 是否阻止默认行为，默认不阻止
      */
     on(keyData: KeyData, keyDownFn: () => void, keyUpFn?: () => void): void;
+    /**
+     * 展示快捷键说明
+     */
+    showInstruction(): void;
     private handlerKeyUpOrDown;
     private getContent;
     /**
@@ -40,10 +44,6 @@ declare class ShortCut {
      * @param keySet
      */
     private checkAssistKeyMatch;
-    /**
-     * 获取按键字母（声明时有可能传 code）
-     */
-    private getKeyLetter;
 }
 export default ShortCut;
 //# sourceMappingURL=index.d.ts.map

@@ -9,6 +9,7 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
+import { getKeyLetter } from "./utils";
 import render from "./render";
 import "./style/index.scss";
 var ShortCut = /** @class */ (function () {
@@ -43,6 +44,11 @@ var ShortCut = /** @class */ (function () {
         if (ShortCut.instance) {
             return ShortCut.instance;
         }
+        // 离开页面提示
+        window.onbeforeunload = function (event) {
+            event.preventDefault();
+            event.returnValue = "";
+        };
         document.addEventListener("keydown", function (event) {
             _this.handlerKeyUpOrDown(event, _this.kvDownMap);
         });
@@ -63,6 +69,12 @@ var ShortCut = /** @class */ (function () {
         if (keyUpFn) {
             this.kvUpMap.set(this.checkKeyExist(keyData, this.kvUpMap), keyUpFn);
         }
+    };
+    /**
+     * 展示快捷键说明
+     */
+    ShortCut.prototype.showInstruction = function () {
+        this.render.showIns(this.kvDownMap);
     };
     ShortCut.prototype.handlerKeyUpOrDown = function (event, map, showContent) {
         var e_1, _a;
@@ -100,7 +112,7 @@ var ShortCut = /** @class */ (function () {
     };
     ShortCut.prototype.getContent = function (keyData) {
         var meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift, _a = keyData.content, content = _a === void 0 ? "" : _a;
-        return "" + (ctrl ? "Ctrl + " : "") + (meta ? "command + " : "") + (shift ? "Shift + " : "") + " " + this.getKeyLetter(keyData) + " " + content;
+        return "" + (ctrl ? "Ctrl + " : "") + (meta ? "command + " : "") + (shift ? "Shift + " : "") + " " + getKeyLetter(keyData) + " " + content;
     };
     /**
      * 判断 传入的 keyData 是否已经存在，如果存在，则返回已存在的 keyData
@@ -187,19 +199,6 @@ var ShortCut = /** @class */ (function () {
             }
             return true;
         }
-    };
-    /**
-     * 获取按键字母（声明时有可能传 code）
-     */
-    ShortCut.prototype.getKeyLetter = function (keySet) {
-        var key = keySet.key, code = keySet.code;
-        if (key) {
-            return key;
-        }
-        if (code) {
-            return String.fromCharCode(code);
-        }
-        return "";
     };
     ShortCut.id = 0;
     ShortCut.instance = new ShortCut();

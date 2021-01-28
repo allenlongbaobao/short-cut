@@ -27,9 +27,18 @@ export interface KeyData {
    * 辅助键数组，当需要多个辅助键时推荐使用，比如 复制，需要支持 ctrl + c 或者 command + c
    * 需要注意的是，assistArray 的优先级最高，会覆盖其他的辅助键设置
    */
-  assistArray?: [];
+  assistArray?: AssistKey[];
 }
-
+export interface AssistKey {
+  ctrl?: boolean;
+  meta?: boolean;
+  shift?: boolean;
+  alt?: boolean;
+  win?: boolean;
+  caps?: boolean;
+  tab?: boolean;
+  space?: boolean;
+}
 export const enum Keyboard {
   DELETE = 127,
   ENTER = 13,

@@ -1,5 +1,8 @@
+<div align=center>
+  <img  src="./logo.png" />
+</div>
+
 # Short-cutting 快捷键事件统一解决方案
-![img](./logo.png)
 
 ## 安装
   `yarn add short-cutting`

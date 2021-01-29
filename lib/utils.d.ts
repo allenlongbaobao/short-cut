@@ -1,4 +1,4 @@
-import { KeyData } from "./type";
+import { KeyData } from "./index";
 /**
  * 获取按键字母（声明时有可能传 code）
  */

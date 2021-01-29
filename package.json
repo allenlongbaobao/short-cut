@@ -3,7 +3,6 @@
   "version": "1.9.2",
   "description": "快捷键统一解决方案",
   "main": "./lib-esm/index.js",
-  "types": "./lib-esm/index.d.ts",
   "scripts": {
     "test-example": "webpack",
     "webpack": "webpack --config webpack.prod.js",

@@ -215,4 +215,3 @@ var shortCut = new ShortCut();
 window.shortCut = shortCut;
 export { shortCut };
 export default ShortCut;
-export * from "./type.d";

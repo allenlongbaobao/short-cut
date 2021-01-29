@@ -1,4 +1,4 @@
-import { AssistKey, KeyData, MapType } from "./type";
+import { AssistKey, KeyData, MapType } from "./index";
 import { getKeyLetter, detectOS } from "./utils";
 
 class Render {

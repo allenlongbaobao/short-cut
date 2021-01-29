@@ -1,4 +1,4 @@
-import { AssistKey, MapType } from "./type";
+import { AssistKey, MapType } from "./index";
 declare class Render {
     private dom;
     private instructionDom;

@@ -9,8 +9,6 @@ webpack:
 	yarn webpack
 
 copy:
-	cp src/type.d.ts lib
-	cp src/type.d.ts lib-esm
 	cp -r ./src/style lib
 	cp -r ./src/style lib-esm
 	cp _bundles/index.css lib

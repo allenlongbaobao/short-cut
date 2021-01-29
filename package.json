@@ -1,6 +1,6 @@
 {
   "name": "short-cutting",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "快捷键统一解决方案",
   "main": "index.js",
   "scripts": {

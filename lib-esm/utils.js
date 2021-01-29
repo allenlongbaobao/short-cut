@@ -7,6 +7,9 @@ export function getKeyLetter(keySet) {
         return key;
     }
     if (code) {
+        if (code === 127 /* DELETE */ || code === 8 /* BACKSPACE */) {
+            return "Delete";
+        }
         return String.fromCharCode(code);
     }
     return "";

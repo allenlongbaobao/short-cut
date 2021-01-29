@@ -60,13 +60,14 @@ class Render {
     const innerHtml = data
       .map((command) => {
         const { keys, content } = command;
-        return `<div class="sc-record"><div class="sc-record-content">${content}</div>: <div class="sc-record-keys"> ${
-          Array.isArray(keys[0])
-            ? (keys as string[][])
-                .map((item: string[]) => item.join(" + "))
-                .join(" | ")
-            : keys.join(" + ")
-        } </div> </div>`;
+        const keysStr = (Array.isArray(keys[0])
+          ? (keys as string[][])
+              .map((item: string[]) => item.join(" + "))
+              .join(" | ")
+          : keys.join(" + ")
+        ).trim();
+        if (!keysStr) return "";
+        return `<div class="sc-record"><div class="sc-record-content">${content}</div>: <div class="sc-record-keys"> ${keysStr} </div> </div>`;
       })
       .join("");
 

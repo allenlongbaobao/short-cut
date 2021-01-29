@@ -7,11 +7,11 @@
     "lib": ["es2015", "DOM"],
     "allowJs": true,
     "declaration": true, // 生成 .d.ts 文件
-    "declarationMap": true,
+    "declarationMap": false,
     "baseUrl": ".",
     "outDir": "./lib",
     "downlevelIteration": true
   },
   "files": ["src/index.ts"],
-  "exclude": ["node_modules/@types/webpack-sources"]
+  "exclude": ["node_modules"]
 }

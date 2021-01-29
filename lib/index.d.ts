@@ -55,4 +55,3 @@ declare const shortCut: ShortCut;
 export { shortCut };
 export default ShortCut;
 export * from "./type.d";
-//# sourceMappingURL=index.d.ts.map

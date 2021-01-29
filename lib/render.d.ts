@@ -26,4 +26,3 @@ declare class Render {
 }
 declare const render: Render;
 export default render;
-//# sourceMappingURL=render.d.ts.map

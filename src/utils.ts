@@ -1,4 +1,4 @@
-import { KeyData } from "./type";
+import { Keyboard, KeyData } from "./type";
 /**
  * 获取按键字母（声明时有可能传 code）
  */
@@ -8,6 +8,9 @@ export function getKeyLetter(keySet: KeyData): string {
     return key;
   }
   if (code) {
+    if (code === Keyboard.DELETE || code === Keyboard.BACKSPACE) {
+      return "Delete";
+    }
     return String.fromCharCode(code);
   }
 

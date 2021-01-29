@@ -1,4 +1,4 @@
-import { IOption, KeyData, MapType } from "./type";
+import { AssistKey, IOption, KeyData, MapType } from "./type";
 import { getKeyLetter } from "./utils";
 import render from "./render";
 import "./style/index.scss";
@@ -98,19 +98,25 @@ class ShortCut {
         }
         const fn = map.get(keySet);
         if (showContent && showTip) {
-          this.render.show(this.getContent(keySet));
+          this.render.show(this.getContent(keySet, event));
         }
-        if (fn) {
-          fn();
-        }
+        fn && fn();
       }
     }
   }
-  private getContent(keyData: KeyData): string {
-    const { meta, ctrl, shift, content = "" } = keyData;
-    return `${ctrl ? "Ctrl + " : ""}${meta ? "command + " : ""}${
-      shift ? "Shift + " : ""
-    } ${getKeyLetter(keyData)} ${content}`;
+  private getContent(keyData: KeyData, event: KeyboardEvent): string {
+    const { content = "", assistArray } = keyData;
+    let prefix = "";
+    if (assistArray) {
+      const assist = assistArray.find((a) => this.assistMatchMethod(a, event));
+      prefix = this.render.genAssistKeys(assist).join(" + ");
+    } else {
+      prefix = this.render.genAssistKeys(keyData).join(" + ");
+    }
+
+    return `${!!prefix ? prefix + " + " : ""} ${getKeyLetter(
+      keyData
+    )} ${content}`;
   }
 
   /**
@@ -151,34 +157,39 @@ class ShortCut {
    * @param keySet
    */
   private checkAssistKeyMatch(keySet: KeyData, event: KeyboardEvent): boolean {
-    const { metaKey, ctrlKey, shiftKey } = event;
     const { assistArray } = keySet;
     // 有辅助键的情况，会忽略其他的键的支持
     if (assistArray && assistArray.length) {
       // 数值中配置了多个方案，只要有一个方案匹配上就可以返回 true
       for (let optKeys of assistArray) {
-        const { ctrl, meta, shift } = optKeys;
-        if (!!ctrl === ctrlKey && !!meta === metaKey && !!shift === shiftKey) {
+        if (this.assistMatchMethod(optKeys, event)) {
           return true;
         }
       }
       return false;
     } else {
-      const { ctrl, meta, shift } = keySet;
-      // 辅助键严格相等
-      if (!!ctrl !== ctrlKey) {
-        return false;
-      }
-      if (!!meta !== metaKey) {
-        return false;
-      }
-      if (!!shift !== shiftKey) {
-        return false;
-      }
-      return true;
+      return this.assistMatchMethod(keySet, event);
     }
   }
+  /**
+   * 判断辅助键是否匹配
+   * @param key
+   * @param event
+   */
+  private assistMatchMethod(key: AssistKey, event: KeyboardEvent) {
+    const { ctrl, meta, shift, alt } = key;
+    const { metaKey, ctrlKey, shiftKey, altKey } = event;
+    return (
+      !!ctrl === ctrlKey &&
+      !!meta === metaKey &&
+      !!shift === shiftKey &&
+      !!alt === altKey
+    );
+  }
 }
-(window as any).shortCut = new ShortCut();
+
+const shortCut = new ShortCut();
+(window as any).shortCut = shortCut;
+export { shortCut };
 
 export default ShortCut;

@@ -1,4 +1,4 @@
-import { MapType } from "./type";
+import { AssistKey, MapType } from "./type";
 declare class Render {
     private dom;
     private instructionDom;
@@ -22,7 +22,7 @@ declare class Render {
         content: string;
         keys: string[] | string[][];
     }[];
-    private genAssistKeys;
+    genAssistKeys(config: AssistKey): string[];
 }
 declare const render: Render;
 export default render;

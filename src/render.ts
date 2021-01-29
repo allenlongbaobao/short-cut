@@ -44,8 +44,12 @@ class Render {
     this.instructionDom.innerHTML = "<div class='sc-block'></div>";
     window.document.body.appendChild(this.instructionDom);
     this.instructionDom.classList.add("sc-instruction");
-    this.instructionDom.addEventListener("click", () => {
-      this.instructionDom.classList.remove("show");
+    this.instructionDom.addEventListener("click", (event: MouseEvent) => {
+      if (
+        (event.target as HTMLDivElement).classList.contains("sc-instruction")
+      ) {
+        this.instructionDom.classList.remove("show");
+      }
     });
   }
 
@@ -76,11 +80,14 @@ class Render {
   public genInstructorData(kvMap: MapType) {
     const arr = [];
     for (let keySet of kvMap.keys()) {
-      const { content = "未命名", assistArray } = keySet;
+      const { content, assistArray } = keySet;
       const obj: {
         content: string;
         keys: string[] | string[][];
       } = { content, keys: [] };
+      if (!content) {
+        continue;
+      }
       const keyStr = getKeyLetter(keySet).toUpperCase();
       if (assistArray) {
         if (assistArray.length > 1) {
@@ -95,10 +102,9 @@ class Render {
       }
       arr.push(obj);
     }
-    console.log(arr);
     return arr;
   }
-  private genAssistKeys(config: AssistKey) {
+  public genAssistKeys(config: AssistKey) {
     const { ctrl, meta, shift, alt, caps } = config;
     const keys = [];
     if (ctrl) {

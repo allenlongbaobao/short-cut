@@ -19,7 +19,6 @@
       console.log('a')
     } )
     window.shortCut.on({
-      ctrl: true,
       key: 'c',
       content: '复制',
       assistArray: [{ctrl: true}, { meta: true}],
@@ -33,6 +32,12 @@
       key: 'x',
     }, () => {
       console.log('c')
+    })
+    window.shortCut.on({
+      code: 8,
+      content: '删除'
+    }, () => {
+      console.log('删除')
     })
     const btn = document.getElementById('key-btn')
     btn.addEventListener('click', () => {

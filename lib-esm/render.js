@@ -47,8 +47,10 @@ var Render = /** @class */ (function () {
         this.instructionDom.innerHTML = "<div class='sc-block'></div>";
         window.document.body.appendChild(this.instructionDom);
         this.instructionDom.classList.add("sc-instruction");
-        this.instructionDom.addEventListener("click", function () {
-            _this.instructionDom.classList.remove("show");
+        this.instructionDom.addEventListener("click", function (event) {
+            if (event.target.classList.contains("sc-instruction")) {
+                _this.instructionDom.classList.remove("show");
+            }
         });
     };
     Render.prototype.showIns = function (kvMap) {
@@ -76,8 +78,11 @@ var Render = /** @class */ (function () {
         var _this = this;
         var arr = [];
         var _loop_1 = function (keySet) {
-            var _a = keySet.content, content = _a === void 0 ? "未命名" : _a, assistArray = keySet.assistArray;
+            var content = keySet.content, assistArray = keySet.assistArray;
             var obj = { content: content, keys: [] };
+            if (!content) {
+                return "continue";
+            }
             var keyStr = getKeyLetter(keySet).toUpperCase();
             if (assistArray) {
                 if (assistArray.length > 1) {
@@ -108,7 +113,6 @@ var Render = /** @class */ (function () {
             }
             finally { if (e_1) throw e_1.error; }
         }
-        console.log(arr);
         return arr;
     };
     Render.prototype.genAssistKeys = function (config) {

@@ -94,11 +94,9 @@ var ShortCut = /** @class */ (function () {
                     }
                     var fn = map.get(keySet);
                     if (showContent && showTip) {
-                        this.render.show(this.getContent(keySet));
+                        this.render.show(this.getContent(keySet, event));
                     }
-                    if (fn) {
-                        fn();
-                    }
+                    fn && fn();
                 }
             }
         }
@@ -110,9 +108,18 @@ var ShortCut = /** @class */ (function () {
             finally { if (e_1) throw e_1.error; }
         }
     };
-    ShortCut.prototype.getContent = function (keyData) {
-        var meta = keyData.meta, ctrl = keyData.ctrl, shift = keyData.shift, _a = keyData.content, content = _a === void 0 ? "" : _a;
-        return "" + (ctrl ? "Ctrl + " : "") + (meta ? "command + " : "") + (shift ? "Shift + " : "") + " " + getKeyLetter(keyData) + " " + content;
+    ShortCut.prototype.getContent = function (keyData, event) {
+        var _this = this;
+        var _a = keyData.content, content = _a === void 0 ? "" : _a, assistArray = keyData.assistArray;
+        var prefix = "";
+        if (assistArray) {
+            var assist = assistArray.find(function (a) { return _this.assistMatchMethod(a, event); });
+            prefix = this.render.genAssistKeys(assist).join(" + ");
+        }
+        else {
+            prefix = this.render.genAssistKeys(keyData).join(" + ");
+        }
+        return (!!prefix ? prefix + " + " : "") + " " + getKeyLetter(keyData) + " " + content;
     };
     /**
      * 判断 传入的 keyData 是否已经存在，如果存在，则返回已存在的 keyData
@@ -162,7 +169,6 @@ var ShortCut = /** @class */ (function () {
      */
     ShortCut.prototype.checkAssistKeyMatch = function (keySet, event) {
         var e_3, _a;
-        var metaKey = event.metaKey, ctrlKey = event.ctrlKey, shiftKey = event.shiftKey;
         var assistArray = keySet.assistArray;
         // 有辅助键的情况，会忽略其他的键的支持
         if (assistArray && assistArray.length) {
@@ -170,8 +176,7 @@ var ShortCut = /** @class */ (function () {
                 // 数值中配置了多个方案，只要有一个方案匹配上就可以返回 true
                 for (var assistArray_1 = __values(assistArray), assistArray_1_1 = assistArray_1.next(); !assistArray_1_1.done; assistArray_1_1 = assistArray_1.next()) {
                     var optKeys = assistArray_1_1.value;
-                    var ctrl = optKeys.ctrl, meta = optKeys.meta, shift = optKeys.shift;
-                    if (!!ctrl === ctrlKey && !!meta === metaKey && !!shift === shiftKey) {
+                    if (this.assistMatchMethod(optKeys, event)) {
                         return true;
                     }
                 }
@@ -186,23 +191,27 @@ var ShortCut = /** @class */ (function () {
             return false;
         }
         else {
-            var ctrl = keySet.ctrl, meta = keySet.meta, shift = keySet.shift;
-            // 辅助键严格相等
-            if (!!ctrl !== ctrlKey) {
-                return false;
-            }
-            if (!!meta !== metaKey) {
-                return false;
-            }
-            if (!!shift !== shiftKey) {
-                return false;
-            }
-            return true;
+            return this.assistMatchMethod(keySet, event);
         }
+    };
+    /**
+     * 判断辅助键是否匹配
+     * @param key
+     * @param event
+     */
+    ShortCut.prototype.assistMatchMethod = function (key, event) {
+        var ctrl = key.ctrl, meta = key.meta, shift = key.shift, alt = key.alt;
+        var metaKey = event.metaKey, ctrlKey = event.ctrlKey, shiftKey = event.shiftKey, altKey = event.altKey;
+        return (!!ctrl === ctrlKey &&
+            !!meta === metaKey &&
+            !!shift === shiftKey &&
+            !!alt === altKey);
     };
     ShortCut.id = 0;
     ShortCut.instance = new ShortCut();
     return ShortCut;
 }());
-window.shortCut = new ShortCut();
+var shortCut = new ShortCut();
+window.shortCut = shortCut;
+export { shortCut };
 export default ShortCut;

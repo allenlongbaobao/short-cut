@@ -36,6 +36,13 @@
     shortCutting.showInstruction()
   ```
 
+  当前支持的辅助键：
+  
+  * ctrl
+  * meta (win | command)
+  * shift
+  * alt
+
 @TODO 功能点:
 
 - [x] 1. 支持可选键，比如复制，可以使用 ctrl + c，也可以支持 command + c   

@@ -44,6 +44,14 @@ declare class ShortCut {
      * @param keySet
      */
     private checkAssistKeyMatch;
+    /**
+     * 判断辅助键是否匹配
+     * @param key
+     * @param event
+     */
+    private assistMatchMethod;
 }
+declare const shortCut: ShortCut;
+export { shortCut };
 export default ShortCut;
 //# sourceMappingURL=index.d.ts.map

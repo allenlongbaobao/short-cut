@@ -193,3 +193,5 @@ const shortCut = new ShortCut();
 export { shortCut };
 
 export default ShortCut;
+
+export * from "./type.d";

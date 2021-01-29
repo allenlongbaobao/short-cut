@@ -19,3 +19,8 @@ copy:
 pub:
 	npx standard-version
 	npm publish --access=public
+
+runner:
+	make build
+	make webpack
+	make copy

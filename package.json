@@ -29,7 +29,6 @@
     "@typescript-eslint/parser": "^4.14.1",
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^3.0.0",
-    "copyfiles": "^2.4.1",
     "css-loader": "^5.0.1",
     "eslint-config-ant": "^0.0.1",
     "eslint-config-prettier": "6.11.0",

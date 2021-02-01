@@ -1,7 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -25,7 +25,7 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
  *
  */
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 /*
  * We've enabled TerserPlugin for you! This minifies your app
@@ -35,22 +35,21 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
  *
  */
 
-const TerserPlugin = require('terser-webpack-plugin');
-
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
+  mode: "development",
+  entry: "./src/index.ts",
   watch: true, // 监听代码更新
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, '_bundles'),
-    library: 'short-cut',
-    libraryTarget: 'umd',
+    filename: "index.js",
+    path: path.resolve(__dirname, "_bundles"),
+    library: "short-cut",
+    libraryTarget: "umd",
     umdNamedDefine: true,
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 9000,
     watchContentBase: true,
@@ -58,18 +57,18 @@ module.exports = {
   },
 
   plugins: [
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
     new WebpackManifestPlugin(),
     new webpack.ProgressPlugin(),
-    new MiniCssExtractPlugin({ filename: 'index.css' }),
+    new MiniCssExtractPlugin({ filename: "index.css" }),
   ],
 
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: [{ loader: 'awesome-typescript-loader' }],
-        include: [path.resolve(__dirname, 'src')],
+        use: [{ loader: "awesome-typescript-loader" }],
+        include: [path.resolve(__dirname, "src")],
         exclude: [/node_modules/],
       },
       {
@@ -81,14 +80,14 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
 
             options: {
               sourceMap: true,
             },
           },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
 
             options: {
               sourceMap: true,
@@ -100,11 +99,11 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
   },
 
   optimization: {
-    // minimizer: [new TerserPlugin()],
+    minimizer: [new TerserPlugin()],
 
     splitChunks: {
       cacheGroups: {
@@ -114,7 +113,7 @@ module.exports = {
         },
       },
 
-      chunks: 'async',
+      chunks: "async",
       minChunks: 1,
       minSize: 30000,
       name: false,

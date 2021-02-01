@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/allenlongbaobao/short-cut/compare/v1.9.3...v1.10.0) (2021-02-01)
+
+
+### Features
+
+* 增加了闪烁时间选择 ([3d3c652](https://github.com/allenlongbaobao/short-cut/commit/3d3c652a7495663ac035fffc2a8a707304613edd))
+* 增加单元测试和cdn 链接 ([6469534](https://github.com/allenlongbaobao/short-cut/commit/646953457a99cb096ddd5d70113c1ff88f99b5a8))
+
 ### [1.9.3](https://github.com/allenlongbaobao/short-cut/compare/v1.9.2...v1.9.3) (2021-01-29)
 
 ### [1.9.2](https://github.com/allenlongbaobao/short-cut/compare/v1.9.1...v1.9.2) (2021-01-29)

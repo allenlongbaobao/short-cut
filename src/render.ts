@@ -1,4 +1,4 @@
-import { AssistKey, KeyData, MapType } from "./index";
+import { AssistKey, Duration, durationMap, KeyData, MapType } from "./index";
 import { getKeyLetter, detectOS } from "./utils";
 
 class Render {
@@ -11,7 +11,7 @@ class Render {
   }
 
   // 显示按键提示
-  public show(contents: string) {
+  public show(contents: string, duration: Duration) {
     // 立即清除定时器，并将状态重置为 hide
     this.timeout && clearTimeout(this.timeout);
     this.dom.classList.remove("show");
@@ -23,7 +23,7 @@ class Render {
 
     this.timeout = setTimeout(() => {
       this.dom.classList.remove("show");
-    }, 2000);
+    }, durationMap[duration]);
   }
 
   /**

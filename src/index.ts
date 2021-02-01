@@ -57,33 +57,34 @@ export const enum Keyboard {
   Y = 89,
 }
 
+export type Duration = "fast" | "medium" | "slow";
+export const durationMap = {
+  fast: 300,
+  medium: 1000,
+  slow: 2000,
+};
 export interface IOption {
   /**
    * 默认为 true
    */
-  preventDefault: boolean;
+  preventDefault?: boolean;
+  duration?: Duration;
 }
 
 export type MapType = Map<KeyData, () => void>;
 
 class ShortCut {
   public static id = 0;
+  // 单例
   public static instance: ShortCut = new ShortCut();
 
   private render = render;
 
   private kvDownMap: MapType = new Map();
   private kvUpMap: MapType = new Map();
-  private keyValueMap: { [key: string]: number } = {
-    DELETE: 127,
-    ENTER: 13,
-    BACKSPACE: 8,
-    CTRL: 17,
-    ALT: 18,
-    SPACE: 32,
-  };
   private option: IOption = {
     preventDefault: true,
+    duration: "slow",
   };
 
   /**
@@ -94,13 +95,12 @@ class ShortCut {
    * @param param0
    */
   constructor(o?: IOption) {
-    // 设置会覆盖
-    if (o) {
-      this.option = o;
-    }
-
     // 确保全局唯一
     if (ShortCut.instance) {
+      // 设置会覆盖
+      if (o) {
+        ShortCut.instance.option = { ...this.option, ...o };
+      }
       return ShortCut.instance;
     }
 
@@ -118,6 +118,10 @@ class ShortCut {
       this.handlerKeyUpOrDown(event, this.kvUpMap, false);
     });
     ShortCut.id++;
+  }
+
+  public setDuration(duration: Duration): void {
+    this.option.duration = duration;
   }
 
   /**
@@ -147,7 +151,7 @@ class ShortCut {
     showContent: boolean = true
   ): void {
     const keySets = map.keys();
-    const { preventDefault } = this.option;
+    const { preventDefault, duration } = this.option;
 
     for (let keySet of keySets) {
       const { showTip = true } = keySet;
@@ -162,7 +166,8 @@ class ShortCut {
         }
         const fn = map.get(keySet);
         if (showContent && showTip) {
-          this.render.show(this.getContent(keySet, event));
+          console.log("duration", this);
+          this.render.show(this.getContent(keySet, event), duration);
         }
         fn && fn();
       }
@@ -252,7 +257,7 @@ class ShortCut {
   }
 }
 
-const shortCut = new ShortCut();
+const shortCut = new ShortCut({ duration: "fast" });
 (window as any).shortCut = shortCut;
 export { shortCut };
 

@@ -54,11 +54,18 @@ export declare const enum Keyboard {
     Z = 90,
     Y = 89
 }
+export declare type Duration = "fast" | "medium" | "slow";
+export declare const durationMap: {
+    fast: number;
+    medium: number;
+    slow: number;
+};
 export interface IOption {
     /**
      * 默认为 true
      */
-    preventDefault: boolean;
+    preventDefault?: boolean;
+    duration?: Duration;
 }
 export declare type MapType = Map<KeyData, () => void>;
 declare class ShortCut {
@@ -67,7 +74,6 @@ declare class ShortCut {
     private render;
     private kvDownMap;
     private kvUpMap;
-    private keyValueMap;
     private option;
     /**
      * 构造器传入参数
@@ -77,6 +83,7 @@ declare class ShortCut {
      * @param param0
      */
     constructor(o?: IOption);
+    setDuration(duration: Duration): void;
     /**
      * 增加了监听事件
      * @param keyData
@@ -115,3 +122,4 @@ declare class ShortCut {
 declare const shortCut: ShortCut;
 export { shortCut };
 export default ShortCut;
+//# sourceMappingURL=index.d.ts.map

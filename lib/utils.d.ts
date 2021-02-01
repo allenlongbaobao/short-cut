@@ -7,3 +7,4 @@ export declare function getKeyLetter(keySet: KeyData): string;
  * 检测 OS
  */
 export declare function detectOS(): "Mac" | "Unix" | "Linux" | "Win2000" | "WinXP" | "Win2003" | "WinVista" | "Win7" | "other";
+//# sourceMappingURL=utils.d.ts.map

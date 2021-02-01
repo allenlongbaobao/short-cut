@@ -14,12 +14,12 @@
   color:honeydew;
   font-weight: 500;
   font-size: 18px; 
-  transition: opacity, 1.8s, ease, 0.5s;
+  transition: opacity, 0s, ease, 0.2s;
   padding: 0 10px;
 
   &.show {
     opacity: 1;
-    transition: opacity, 1.8s, ease, .5s;
+    transition: opacity, 0s, ease, 0.2s;
   }
 }
 

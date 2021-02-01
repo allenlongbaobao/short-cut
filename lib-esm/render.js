@@ -9,6 +9,7 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
+import { durationMap } from "./index";
 import { getKeyLetter, detectOS } from "./utils";
 var Render = /** @class */ (function () {
     function Render() {
@@ -16,7 +17,7 @@ var Render = /** @class */ (function () {
         this.initInstruction();
     }
     // 显示按键提示
-    Render.prototype.show = function (contents) {
+    Render.prototype.show = function (contents, duration) {
         var _this = this;
         // 立即清除定时器，并将状态重置为 hide
         this.timeout && clearTimeout(this.timeout);
@@ -27,7 +28,7 @@ var Render = /** @class */ (function () {
         }, 100);
         this.timeout = setTimeout(function () {
             _this.dom.classList.remove("show");
-        }, 2000);
+        }, durationMap[duration]);
     };
     /**
      * 初始化缩略提示

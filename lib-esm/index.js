@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __values = (this && this.__values) || function(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
@@ -12,6 +23,11 @@ var __values = (this && this.__values) || function(o) {
 import { getKeyLetter } from "./utils";
 import render from "./render";
 import "./style/index.scss";
+export var durationMap = {
+    fast: 300,
+    medium: 1000,
+    slow: 2000,
+};
 var ShortCut = /** @class */ (function () {
     /**
      * 构造器传入参数
@@ -25,23 +41,16 @@ var ShortCut = /** @class */ (function () {
         this.render = render;
         this.kvDownMap = new Map();
         this.kvUpMap = new Map();
-        this.keyValueMap = {
-            DELETE: 127,
-            ENTER: 13,
-            BACKSPACE: 8,
-            CTRL: 17,
-            ALT: 18,
-            SPACE: 32,
-        };
         this.option = {
             preventDefault: true,
+            duration: "slow",
         };
-        // 设置会覆盖
-        if (o) {
-            this.option = o;
-        }
         // 确保全局唯一
         if (ShortCut.instance) {
+            // 设置会覆盖
+            if (o) {
+                ShortCut.instance.option = __assign(__assign({}, this.option), o);
+            }
             return ShortCut.instance;
         }
         // 离开页面提示
@@ -57,6 +66,9 @@ var ShortCut = /** @class */ (function () {
         });
         ShortCut.id++;
     }
+    ShortCut.prototype.setDuration = function (duration) {
+        this.option.duration = duration;
+    };
     /**
      * 增加了监听事件
      * @param keyData
@@ -80,11 +92,11 @@ var ShortCut = /** @class */ (function () {
         var e_1, _a;
         if (showContent === void 0) { showContent = true; }
         var keySets = map.keys();
-        var preventDefault = this.option.preventDefault;
+        var _b = this.option, preventDefault = _b.preventDefault, duration = _b.duration;
         try {
             for (var keySets_1 = __values(keySets), keySets_1_1 = keySets_1.next(); !keySets_1_1.done; keySets_1_1 = keySets_1.next()) {
                 var keySet = keySets_1_1.value;
-                var _b = keySet.showTip, showTip = _b === void 0 ? true : _b;
+                var _c = keySet.showTip, showTip = _c === void 0 ? true : _c;
                 if (this.checkKeyMatch(event.keyCode, keySet)) {
                     if (!this.checkAssistKeyMatch(keySet, event)) {
                         return;
@@ -94,7 +106,8 @@ var ShortCut = /** @class */ (function () {
                     }
                     var fn = map.get(keySet);
                     if (showContent && showTip) {
-                        this.render.show(this.getContent(keySet, event));
+                        console.log("duration", this);
+                        this.render.show(this.getContent(keySet, event), duration);
                     }
                     fn && fn();
                 }
@@ -208,10 +221,11 @@ var ShortCut = /** @class */ (function () {
             !!alt === altKey);
     };
     ShortCut.id = 0;
+    // 单例
     ShortCut.instance = new ShortCut();
     return ShortCut;
 }());
-var shortCut = new ShortCut();
+var shortCut = new ShortCut({ duration: "fast" });
 window.shortCut = shortCut;
 export { shortCut };
 export default ShortCut;

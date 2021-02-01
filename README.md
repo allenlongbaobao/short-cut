@@ -81,6 +81,10 @@
     const shortCut = new ShortCut({ duration: 'fast' }) // fast | medium | slow
   ```
 
+  ## CDN
+    js: `https://unpkg.com/short-cutting/_bundles/index.js`
+    css: `https://unpkg.com/short-cutting/_bundles/index.css`
+
   调起快捷键一览，用于展示所有支持的快捷键
 
 
@@ -104,5 +108,5 @@
 - [x] 5. 支持 onbeforeunload 事件劫持  
 - [x] 6. 支持三种闪烁间隔时间选择：fast | medium | slow
 - [ ] 7. 抽离单独的 type.d.ts 包
-- [ ] 8. 支持 CDN 加载
+- [x] 8. 支持 CDN 加载
 

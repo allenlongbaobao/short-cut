@@ -1,10 +1,10 @@
-import { AssistKey, MapType } from "./index";
+import { AssistKey, Duration, MapType } from "./index";
 declare class Render {
     private dom;
     private instructionDom;
     private timeout;
     constructor();
-    show(contents: string): void;
+    show(contents: string, duration: Duration): void;
     /**
      * 初始化缩略提示
      */
